@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -20,6 +20,20 @@ allprojects {
         google()
         jcenter()
     }
+}
+
+ext {
+    // sdk and tools
+    minSdkVersion = 21
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+
+    // dependencies versions
+    supportLibraryVersion = '27.1.1'
+    constraintLibraryVersion = '1.1.2'
+    jUnitLibraryVersion = '4.12'
+    espressoLibraryVersion = '3.0.2'
+    testRunnerVersion = '1.0.2'
 }
 
 task clean(type: Delete) {
