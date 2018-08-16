@@ -1,0 +1,19 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="@string/key_switch_distraction_mode"
+        android:summary="@string/distraction_mode_sub_label"
+        android:title="@string/distraction_mode_label" />
+
+    <EditTextPreference
+        android:defaultValue="1"
+        android:inputType="number"
+        android:key="@string/key_edit_distraction_mode_interval"
+        android:maxLines="1"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:summary="@string/distraction_mode_interval_summary"
+        android:title="@string/distraction_mode_interval" />
+
+</PreferenceScreen>

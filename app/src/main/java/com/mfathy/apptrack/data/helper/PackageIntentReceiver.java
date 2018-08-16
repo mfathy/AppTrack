@@ -1,9 +1,4 @@
-package com.mfathy.apptrack;
-
-/**
- * Created by Mohammed Fathy on 12/08/2018.
- * dev.mfathy@gmail.com
- */
+package com.mfathy.apptrack.data.helper;
 
 
 import android.content.BroadcastReceiver;
@@ -11,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.mfathy.apptrack.data.loader.AppListLoader;
+
 /**
- * Helper class to look for interesting changes to the installed apps
- * so that the loader can be updated.
+ * Created by Mohammed Fathy on 12/08/2018.
+ * dev.mfathy@gmail.com
+ * Helper class to look for interesting changes to the installed apps so that the loader can be updated.
  */
 public class PackageIntentReceiver extends BroadcastReceiver {
     final AppListLoader mLoader;

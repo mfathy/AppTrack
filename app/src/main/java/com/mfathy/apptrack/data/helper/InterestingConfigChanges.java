@@ -1,24 +1,20 @@
-package com.mfathy.apptrack;
-
-/**
- * Created by Mohammed Fathy on 12/08/2018.
- * dev.mfathy@gmail.com
- */
-
+package com.mfathy.apptrack.data.helper;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
 /**
- * Helper for determining if the configuration has changed in an interesting
- * way so we need to rebuild the app list.
+ * Created by Mohammed Fathy on 12/08/2018.
+ * dev.mfathy@gmail.com
+ * <p>
+ * Helper for determining if the configuration has changed in an interesting way so we need to rebuild the app list.
  */
 public class InterestingConfigChanges {
-    final Configuration mLastConfiguration = new Configuration();
-    int mLastDensity;
+    private final Configuration mLastConfiguration = new Configuration();
+    private int mLastDensity;
 
-    boolean applyNewConfig(Resources res) {
+    public boolean applyNewConfig(Resources res) {
         int configChanges = mLastConfiguration.updateFrom(res.getConfiguration());
         boolean densityChanged = mLastDensity != res.getDisplayMetrics().densityDpi;
         if (densityChanged || (configChanges & (ActivityInfo.CONFIG_LOCALE

@@ -1,29 +1,35 @@
-package com.mfathy.apptrack;
+package com.mfathy.apptrack.data.model;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+
+import com.mfathy.apptrack.data.loader.AppListLoader;
 
 import java.io.File;
 
 /**
  * Created by Mohammed Fathy on 12/08/2018.
  * dev.mfathy@gmail.com
+ * <p>
+ * {@link AppEntry} is a model data class for {@link AppListLoader}
  */
+public class AppEntry{
 
-public class AppEntry {
-
-    private final AppListLoader mLoader;
+    private final PackageManager mPackageManager;
     private final ApplicationInfo mInfo;
+    private final AppListLoader mLoader;
     private final File mApkFile;
-    private String mLabel;
-    private Drawable mIcon;
     private boolean mMounted;
+    private Drawable mIcon;
+    private String mLabel;
 
-    public AppEntry(AppListLoader loader, ApplicationInfo info) {
+    public AppEntry(AppListLoader loader, PackageManager packageManager, ApplicationInfo info) {
+        mApkFile = new File(info.sourceDir);
+        mPackageManager = packageManager;
         mLoader = loader;
         mInfo = info;
-        mApkFile = new File(info.sourceDir);
     }
 
     public ApplicationInfo getApplicationInfo() {
@@ -37,7 +43,7 @@ public class AppEntry {
     public Drawable getIcon() {
         if (mIcon == null) {
             if (mApkFile.exists()) {
-                mIcon = mInfo.loadIcon(mLoader.mPm);
+                mIcon = mInfo.loadIcon(mPackageManager);
                 return mIcon;
             } else {
                 mMounted = false;
@@ -47,7 +53,7 @@ public class AppEntry {
             // its icon.
             if (mApkFile.exists()) {
                 mMounted = true;
-                mIcon = mInfo.loadIcon(mLoader.mPm);
+                mIcon = mInfo.loadIcon(mPackageManager);
                 return mIcon;
             }
         } else {
@@ -62,7 +68,7 @@ public class AppEntry {
         return mLabel;
     }
 
-    void loadLabel(Context context) {
+    public void loadLabel(Context context) {
         if (mLabel == null || !mMounted) {
             if (!mApkFile.exists()) {
                 mMounted = false;

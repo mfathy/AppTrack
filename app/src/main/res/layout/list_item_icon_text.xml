@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
     android:padding="@dimen/layout_fixed_margin">
 
     <ImageView
         android:id="@+id/icon"
         android:layout_width="48dip"
-        android:layout_height="48dip" />
+        android:layout_height="48dip"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@string/app_name" />
 
     <TextView
         android:id="@+id/text"
@@ -18,4 +21,13 @@
         android:layout_marginEnd="@dimen/layout_fixed_margin"
         android:layout_marginStart="@dimen/layout_fixed_margin"
         android:layout_weight="1.0" />
+
+    <Switch
+        android:id="@+id/black_list_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/layout_fixed_margin" />
+
+
 </LinearLayout>

@@ -1,3 +1,24 @@
 <resources>
     <string name="app_name">AppTrack</string>
+    <string name="label_black_list">Blacklist me</string>
+    <string name="error_no_applications">No Applications!</string>
+    <string name="label_search">Search</string>
+    <string name="exception_message_generic">Error loading applications!</string>
+    <string name="message_request_usage_access">Allow "Usage Access" to start tracking your applications.</string>
+    <string name="allow">Allow</string>
+    <string name="cancel">Cancel</string>
+    <string name="label_settings">Settings</string>
+    <string name="distraction_mode_label">Distraction Mode</string>
+    <string name="distraction_mode_sub_label">Turn on/off distraction mode</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="distraction_mode_interval">Usage Interval</string>
+    <string name="distraction_mode_interval_summary">How many minutes you want to use blacklisted apps? Numbers only.</string>
+
+    <string name="key_switch_distraction_mode">switch_distraction_mode_value</string>
+    <string name="key_edit_distraction_mode_interval">distraction_mode_interval_value</string>
+    <string name="notify_android_o_notification_title">Distraction mode is ON.</string>
+    <string name="notify_android_o_notification_content">Would you like to stop distraction mode?</string>
+    <string name="notify_blacklisted_app_notification_title">Detected Blacklisted App</string>
+    <string name="notify_blacklisted_app_notification_content">You are using a blacklisted App!</string>
+
 </resources>
