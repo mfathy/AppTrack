@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.data.helper;
+package com.mfathy.data.helper;
 
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;

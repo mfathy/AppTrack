@@ -1,11 +1,11 @@
-package com.mfathy.apptrack.data.local;
+package com.mfathy.data.local;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import com.mfathy.apptrack.data.model.BlackListedApp;
+import com.mfathy.data.model.BlackListedApp;
 
 /**
  * Created by Mohammed Fathy on 14/08/2018.

@@ -1,11 +1,11 @@
-package com.mfathy.apptrack.data.local;
+package com.mfathy.data.local;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.mfathy.apptrack.data.model.BlackListedApp;
+import com.mfathy.data.model.BlackListedApp;
 
 import java.util.List;
 

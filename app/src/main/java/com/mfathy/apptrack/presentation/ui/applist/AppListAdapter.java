@@ -11,8 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mfathy.apptrack.R;
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,10 @@
-package com.mfathy.apptrack.data;
+package com.mfathy.data;
 
 import android.content.Context;
 
-import com.mfathy.apptrack.data.local.AppsDatabase;
-import com.mfathy.apptrack.data.local.LocalDataSource;
-import com.mfathy.apptrack.data.utils.AppExecutors;
+import com.mfathy.data.local.AppsDatabase;
+import com.mfathy.data.local.LocalDataSource;
+import com.mfathy.data.utils.AppExecutors;
 
 import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
 
@@ -17,7 +17,7 @@ import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
  */
 public class Injection {
     public static AppsDataRepository provideDataRepository(Context context, AppExecutors appExecutor) {
-        checkNotNull(context);
+        ValidationUtils.checkNotNull(context);
         AppsDatabase database = AppsDatabase.getInstance(context);
         return AppsDataRepository.getInstance(LocalDataSource.getInstance(database.appsDao(), appExecutor));
     }

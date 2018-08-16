@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.data.loader;
+package com.mfathy.data.loader;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
@@ -6,9 +6,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.mfathy.apptrack.data.helper.InterestingConfigChanges;
-import com.mfathy.apptrack.data.helper.PackageIntentReceiver;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.helper.InterestingConfigChanges;
+import com.mfathy.data.helper.PackageIntentReceiver;
+import com.mfathy.data.model.AppEntry;
 
 import java.text.Collator;
 import java.util.ArrayList;

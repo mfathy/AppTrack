@@ -1,6 +1,6 @@
 package com.mfathy.apptrack.presentation.ui.applist;
 
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.model.AppEntry;
 
 /**
  * Created by Mohammed Fathy on 14/08/2018.

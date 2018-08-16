@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.data.utils;
+package com.mfathy.data.utils;
 
 import android.support.annotation.NonNull;
 

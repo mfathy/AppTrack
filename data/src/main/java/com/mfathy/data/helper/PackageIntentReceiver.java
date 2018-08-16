@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.data.helper;
+package com.mfathy.data.helper;
 
 
 import android.content.BroadcastReceiver;
@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.mfathy.apptrack.data.loader.AppListLoader;
+import com.mfathy.data.loader.AppListLoader;
 
 /**
  * Created by Mohammed Fathy on 12/08/2018.

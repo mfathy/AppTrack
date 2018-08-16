@@ -19,11 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mfathy.apptrack.R;
-import com.mfathy.apptrack.data.AppsDataRepository;
-import com.mfathy.apptrack.data.Injection;
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
-import com.mfathy.apptrack.data.utils.AppExecutors;
+import com.mfathy.data.AppsDataRepository;
+import com.mfathy.data.Injection;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.utils.AppExecutors;
 import com.mfathy.apptrack.presentation.Utils.PermissionUtils;
 import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
 import com.mfathy.apptrack.service.DistractionModeService;

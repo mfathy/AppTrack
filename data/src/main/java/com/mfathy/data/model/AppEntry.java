@@ -1,11 +1,11 @@
-package com.mfathy.apptrack.data.model;
+package com.mfathy.data.model;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 
-import com.mfathy.apptrack.data.loader.AppListLoader;
+import com.mfathy.data.loader.AppListLoader;
 
 import java.io.File;
 

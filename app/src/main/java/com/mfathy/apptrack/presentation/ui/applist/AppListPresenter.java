@@ -6,10 +6,10 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.mfathy.apptrack.data.AppsDataSource;
-import com.mfathy.apptrack.data.loader.AppListLoader;
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.AppsDataSource;
+import com.mfathy.data.loader.AppListLoader;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.mfathy.apptrack.data.utils;
+package com.mfathy.data.utils;
 
 import android.os.Handler;
 import android.os.Looper;

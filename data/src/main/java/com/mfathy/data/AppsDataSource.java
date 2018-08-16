@@ -1,9 +1,9 @@
-package com.mfathy.apptrack.data;
+package com.mfathy.data;
 
 import android.support.annotation.NonNull;
 
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
 
 import java.util.List;
 

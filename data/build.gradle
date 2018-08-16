@@ -1,39 +1,35 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.mfathy.apptrack"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
-    //  Local Libraries
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //  Local libs
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //  Room
+    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
 
     //  Support Libraries
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLibraryVersion"
-    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:preference-v14:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:preference-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
 
-    // Testing
+    //  Testing
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoLibraryVersion"
     androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
     testImplementation "junit:junit:$jUnitLibraryVersion"
-    implementation project(':mutilites')
-    implementation project(':data')
 }

@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.data.model;
+package com.mfathy.data.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

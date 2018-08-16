@@ -1,9 +1,9 @@
-package com.mfathy.apptrack.data;
+package com.mfathy.data;
 
 import android.support.annotation.NonNull;
 
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class AppsDataRepository implements AppsDataSource {
 
     // Prevent direct instantiation.
     private AppsDataRepository(@NonNull AppsDataSource mLocalDataSource) {
-        this.mLocalDataSource = checkNotNull(mLocalDataSource);
+        this.mLocalDataSource = ValidationUtils.checkNotNull(mLocalDataSource);
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.mfathy.apptrack.presentation.ui.applist;
 
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.model.AppEntry;
 import com.mfathy.apptrack.presentation.base.BasePresenter;
 import com.mfathy.apptrack.presentation.base.BaseView;
 

@@ -20,11 +20,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.mfathy.apptrack.R;
-import com.mfathy.apptrack.data.AppsDataSource;
-import com.mfathy.apptrack.data.Injection;
-import com.mfathy.apptrack.data.model.AppEntry;
-import com.mfathy.apptrack.data.model.BlackListedApp;
-import com.mfathy.apptrack.data.utils.AppExecutors;
+import com.mfathy.data.AppsDataSource;
+import com.mfathy.data.Injection;
+import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.utils.AppExecutors;
 import com.mfathy.apptrack.presentation.MainActivity;
 import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
 
