@@ -7,8 +7,6 @@ import com.mfathy.data.local.LocalDataSource;
 import com.mfathy.data.utils.AppExecutors;
 import com.mfathy.mutilites.utils.ValidationUtils;
 
-import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
-
 /**
  * Created by Mohammed Fathy on 12/07/2018.
  * dev.mfathy@gmail.com

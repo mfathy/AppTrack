@@ -3,13 +3,11 @@ package com.mfathy.data;
 import android.support.annotation.NonNull;
 
 import com.mfathy.data.exception.AppsNotAvailableException;
-import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.mutilites.utils.ValidationUtils;
 
 import java.util.List;
-
-import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
 
 /**
  * Created by Mohammed Fathy on 14/08/2018.

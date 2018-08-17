@@ -9,7 +9,7 @@ import android.view.MenuItem;
 /**
  * Created by Mohammed Fathy on 12/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Application Settings Activity.
  */
 public class SettingsActivity extends AppCompatActivity {

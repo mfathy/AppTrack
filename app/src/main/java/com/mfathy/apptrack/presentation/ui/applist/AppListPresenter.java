@@ -10,8 +10,8 @@ import com.mfathy.apptrack.exception.ErrorMessageFactory;
 import com.mfathy.data.AppsDataSource;
 import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.loader.AppListLoader;
-import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -21,14 +21,14 @@ import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
 /**
  * Created by Mohammed Fathy on 13/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * {@link AppListPresenter} is the implementation presenter class for {@link AppListFragment}
  */
 public class AppListPresenter implements AppListContract.Presenter, LoaderManager.LoaderCallbacks<List<AppEntry>> {
 
-    private WeakReference<AppListContract.View> mView;
     private final LoaderManager mLoaderManager;
     private final AppsDataSource mDataSource;
+    private WeakReference<AppListContract.View> mView;
     private Context mContext;
 
     AppListPresenter(AppsDataSource mDataSource, LoaderManager manager, Context context) {

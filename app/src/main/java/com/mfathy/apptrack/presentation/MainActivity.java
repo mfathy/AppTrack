@@ -10,7 +10,7 @@ import com.mfathy.apptrack.presentation.ui.applist.AppListFragment;
 /**
  * Created by Mohammed Fathy on 12/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Application starting point.
  */
 public class MainActivity extends AppCompatActivity {

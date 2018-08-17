@@ -14,7 +14,7 @@ import com.mfathy.apptrack.service.DistractionModeService;
 /**
  * Created by Mohammed Fathy on 15/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Settings fragment has 2 settings:
  * 1- Enable/disable distraction mode.
  * 2- User custom waiting interval.

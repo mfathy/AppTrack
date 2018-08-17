@@ -17,8 +17,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.*;
-import static org.mockito.BDDMockito.given;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Mohammed Fathy on 17/08/2018.

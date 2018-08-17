@@ -15,7 +15,7 @@ import java.io.File;
  * <p>
  * {@link AppEntry} is a model data class for {@link AppListLoader}
  */
-public class AppEntry{
+public class AppEntry {
 
     private final PackageManager mPackageManager;
     private final ApplicationInfo mInfo;

@@ -1,13 +1,10 @@
 package com.mfathy.apptrack.presentation.ui.applist;
 
-import android.app.Instrumentation;
 import android.app.LoaderManager;
 import android.content.Context;
 
-import com.mfathy.apptrack.exception.ErrorMessageFactory;
 import com.mfathy.data.AppsDataSource;
 import com.mfathy.data.exception.AppsNotAvailableException;
-import com.mfathy.data.loader.AppListLoader;
 import com.mfathy.data.model.AppEntry;
 import com.mfathy.data.model.BlackListedApp;
 
@@ -18,7 +15,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -37,12 +33,18 @@ public class AppListPresenterTest {
 
     private AppListPresenter appListPresenter;
 
-    @Mock private Context mockContext;
-    @Mock private AppsDataSource mockAppsDataRepository;
-    @Mock private LoaderManager mockLoaderManager;
-    @Mock private AppListContract.View mockView;
-    @Mock private List<BlackListedApp> mockBlackListedApps;
-    @Mock private List<AppEntry> mockAppEntries;
+    @Mock
+    private Context mockContext;
+    @Mock
+    private AppsDataSource mockAppsDataRepository;
+    @Mock
+    private LoaderManager mockLoaderManager;
+    @Mock
+    private AppListContract.View mockView;
+    @Mock
+    private List<BlackListedApp> mockBlackListedApps;
+    @Mock
+    private List<AppEntry> mockAppEntries;
 
     @Captor
     private

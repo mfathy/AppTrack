@@ -21,14 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mfathy.apptrack.R;
+import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
+import com.mfathy.apptrack.presentation.utils.PermissionUtils;
+import com.mfathy.apptrack.service.DistractionModeService;
 import com.mfathy.data.AppsDataRepository;
 import com.mfathy.data.Injection;
-import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.utils.AppExecutors;
-import com.mfathy.apptrack.presentation.utils.PermissionUtils;
-import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
-import com.mfathy.apptrack.service.DistractionModeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Created by Mohammed Fathy on 12/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * {@link AppListFragment} is application list view.
  */
 public class AppListFragment extends Fragment implements AppListContract.View, AppListAdapterInteractions {
@@ -83,6 +83,7 @@ public class AppListFragment extends Fragment implements AppListContract.View, A
 
     /**
      * Fragment view initialization
+     *
      * @param view to be initialized.
      */
     private void initViews(View view) {
@@ -189,6 +190,7 @@ public class AppListFragment extends Fragment implements AppListContract.View, A
     //endregion
 
     //region Helper methods
+
     /**
      * Helper method to start Distraction mode after checking that user gave us permission.
      */

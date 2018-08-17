@@ -8,7 +8,7 @@ import android.os.Build;
 /**
  * Created by Mohammed Fathy on 16/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Custom {@link Application} class.
  */
 public class AppTrack extends Application {

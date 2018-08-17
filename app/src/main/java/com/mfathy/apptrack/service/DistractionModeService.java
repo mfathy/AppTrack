@@ -1,7 +1,6 @@
 package com.mfathy.apptrack.service;
 
 import android.app.AlarmManager;
-import android.app.ListFragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -59,10 +58,10 @@ public class DistractionModeService extends Service {
     private static final int BLACK_LIST_APP_NOTIFICATION_ID = 202;
     private static final long ONE_MINUTE_INTERVAL_MILLIS = 60000L;
     private static final String TAG = "DistractionModeService";
-    private static PendingIntent distractionModeServiceIntent;
-    private ScreenOnOffReceiver screenOnOffReceiver;
-    private static boolean isAlarmStarted = false;
     private static final int REQUEST_CODE = 1001;
+    private static PendingIntent distractionModeServiceIntent;
+    private static boolean isAlarmStarted = false;
+    private ScreenOnOffReceiver screenOnOffReceiver;
     private List<BlackListedApp> mBlackListedApps;
     private AppsDataSource mDataSource;
     private boolean destroy = false;
@@ -73,69 +72,6 @@ public class DistractionModeService extends Service {
 
     public DistractionModeService(AppsDataSource mDataSource) {
         this.mDataSource = mDataSource;
-    }
-
-    //region Service methods.
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        initAppsDataSource();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-
-        loadBlackListedApplications();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = getServiceNotification();
-            startForeground(FORE_GROUND_SERVICE_NOTIFICATION_ID, notification);
-        }
-
-        if (intent == null || ACTION_START.equalsIgnoreCase(intent.getAction())) {
-            if (!isAlarmStarted) {
-                start(this);
-                screenOnOffReceiver = new ScreenOnOffReceiver();
-                registerReceiver(screenOnOffReceiver, ScreenOnOffReceiver.getIntentFilters());
-            }
-            checkCurrentForegroundApp();
-        } else if (ACTION_STOP.equalsIgnoreCase(intent.getAction())) {
-            stopAlarmAndStopSelf();
-        }
-        return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy called - " + destroy);
-        if (!destroy)
-            start(this);
-
-        destroy = false;
-
-        try {
-            unregisterReceiver(screenOnOffReceiver);
-        } catch (IllegalArgumentException e) {
-            //  Receiver not registered
-        }
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-    //endregion
-
-    //region Helper methods
-
-    /**
-     * Initializes application local data source.
-     */
-    private void initAppsDataSource() {
-        AppExecutors mAppExecutor = new AppExecutors();
-        mDataSource = Injection.provideDataRepository(this, mAppExecutor);
     }
 
     /**
@@ -197,6 +133,69 @@ public class DistractionModeService extends Service {
         } catch (NumberFormatException e) {
             return 0L;
         }
+    }
+    //endregion
+
+    //region Helper methods
+
+    //region Service methods.
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        initAppsDataSource();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        loadBlackListedApplications();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification notification = getServiceNotification();
+            startForeground(FORE_GROUND_SERVICE_NOTIFICATION_ID, notification);
+        }
+
+        if (intent == null || ACTION_START.equalsIgnoreCase(intent.getAction())) {
+            if (!isAlarmStarted) {
+                start(this);
+                screenOnOffReceiver = new ScreenOnOffReceiver();
+                registerReceiver(screenOnOffReceiver, ScreenOnOffReceiver.getIntentFilters());
+            }
+            checkCurrentForegroundApp();
+        } else if (ACTION_STOP.equalsIgnoreCase(intent.getAction())) {
+            stopAlarmAndStopSelf();
+        }
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy called - " + destroy);
+        if (!destroy)
+            start(this);
+
+        destroy = false;
+
+        try {
+            unregisterReceiver(screenOnOffReceiver);
+        } catch (IllegalArgumentException e) {
+            //  Receiver not registered
+        }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    /**
+     * Initializes application local data source.
+     */
+    private void initAppsDataSource() {
+        AppExecutors mAppExecutor = new AppExecutors();
+        mDataSource = Injection.provideDataRepository(this, mAppExecutor);
     }
 
     /**

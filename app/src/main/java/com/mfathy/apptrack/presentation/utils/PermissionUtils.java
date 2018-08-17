@@ -14,13 +14,14 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 /**
  * Created by Mohammed Fathy on 15/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Helper class to help getting USAGE_ACCESS permission from the user.
  */
 public class PermissionUtils {
 
     /**
      * Requests USAGE_ACCESS permission from the user.
+     *
      * @param context requesting the permission.
      */
     public static void requestPermission(Context context) {
@@ -31,6 +32,7 @@ public class PermissionUtils {
 
     /**
      * Checks AppTrack has permission to access USAGE_ACCESS data.
+     *
      * @param context requesting the permission.
      * @return access state for our App.
      */
@@ -45,6 +47,7 @@ public class PermissionUtils {
 
     /**
      * Helper method to alert the user to request the USAGE_ACCESS permission.
+     *
      * @param context requesting the permission
      */
     public static void alertUserToRequestPermission(final Context context) {

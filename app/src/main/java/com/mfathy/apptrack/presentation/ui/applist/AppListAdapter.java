@@ -11,8 +11,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mfathy.apptrack.R;
-import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Created by Mohammed Fathy on 12/08/2018.
  * dev.mfathy@gmail.com
- *
+ * <p>
  * Applications list recyclerView adapter.
  */
 

@@ -23,9 +23,20 @@ import java.util.List;
  */
 public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
 
+    /**
+     * Perform alphabetical comparison of application entry objects.
+     */
+    private static final Comparator<AppEntry> ALPHA_COMPARATOR = new Comparator<AppEntry>() {
+        private final Collator sCollator = Collator.getInstance();
+
+        @Override
+        public int compare(AppEntry object1, AppEntry object2) {
+            return sCollator.compare(object1.getLabel(), object2.getLabel());
+        }
+    };
     private final InterestingConfigChanges mLastConfig = new InterestingConfigChanges();
-    private PackageIntentReceiver mPackageObserver;
     private final PackageManager mPackageManager;
+    private PackageIntentReceiver mPackageObserver;
     private List<AppEntry> mApps;
 
     public AppListLoader(Context context) {
@@ -140,16 +151,4 @@ public class AppListLoader extends AsyncTaskLoader<List<AppEntry>> {
             mPackageObserver = null;
         }
     }
-
-    /**
-     * Perform alphabetical comparison of application entry objects.
-     */
-    private static final Comparator<AppEntry> ALPHA_COMPARATOR = new Comparator<AppEntry>() {
-        private final Collator sCollator = Collator.getInstance();
-
-        @Override
-        public int compare(AppEntry object1, AppEntry object2) {
-            return sCollator.compare(object1.getLabel(), object2.getLabel());
-        }
-    };
 }
