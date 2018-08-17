@@ -29,9 +29,8 @@ dependencies {
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
 
     //  JUnit
-    testImplementation "junit:junit:$rootProject.ext.jUnitLibraryVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.testRunnerVersion"
-    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.testRunnerVersion"
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
 
 }

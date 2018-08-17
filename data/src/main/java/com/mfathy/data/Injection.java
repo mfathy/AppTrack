@@ -5,6 +5,7 @@ import android.content.Context;
 import com.mfathy.data.local.AppsDatabase;
 import com.mfathy.data.local.LocalDataSource;
 import com.mfathy.data.utils.AppExecutors;
+import com.mfathy.mutilites.utils.ValidationUtils;
 
 import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
 

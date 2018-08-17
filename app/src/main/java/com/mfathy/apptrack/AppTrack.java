@@ -8,6 +8,8 @@ import android.os.Build;
 /**
  * Created by Mohammed Fathy on 16/08/2018.
  * dev.mfathy@gmail.com
+ *
+ * Custom {@link Application} class.
  */
 public class AppTrack extends Application {
     public static final String CHANNEL_ID = ".id.notification.channel.01";
@@ -15,6 +17,14 @@ public class AppTrack extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        initNotificationChannel();
+    }
+
+    /**
+     * Initialize Notification channel used by the application.
+     */
+    private void initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
                     CHANNEL_ID,

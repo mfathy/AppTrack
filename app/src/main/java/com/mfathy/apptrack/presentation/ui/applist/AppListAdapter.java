@@ -30,6 +30,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private List<BlackListedApp> mBlackListedApps;
     private List<AppEntry> appEntries;
 
+    //region Constructor and Data initialization
     AppListAdapter(ArrayList<AppEntry> objects, AppListAdapterInteractions mListener) {
         this.appEntries = objects;
         this.mListener = mListener;
@@ -40,7 +41,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         this.mBlackListedApps = appEntities;
         notifyDataSetChanged();
     }
+    //endregion
 
+    //region Adapter methods
     @NonNull
     @Override
     public AppListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +68,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     public int getItemCount() {
         return appEntries.size();
     }
+    //endregion
 
+    //region ViewHolder
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         private ImageView icon;
         private TextView text;
@@ -92,4 +97,5 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             mListener.onToggleBlackListButton(appEntries.get(getAdapterPosition()), isChecked);
         }
     }
+    //endregion
 }

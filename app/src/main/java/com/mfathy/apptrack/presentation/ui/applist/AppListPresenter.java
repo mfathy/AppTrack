@@ -6,7 +6,9 @@ import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.mfathy.apptrack.exception.ErrorMessageFactory;
 import com.mfathy.data.AppsDataSource;
+import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.loader.AppListLoader;
 import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
@@ -19,18 +21,20 @@ import static com.mfathy.mutilites.utils.ValidationUtils.checkNotNull;
 /**
  * Created by Mohammed Fathy on 13/08/2018.
  * dev.mfathy@gmail.com
+ *
+ * {@link AppListPresenter} is the implementation presenter class for {@link AppListFragment}
  */
 public class AppListPresenter implements AppListContract.Presenter, LoaderManager.LoaderCallbacks<List<AppEntry>> {
 
     private WeakReference<AppListContract.View> mView;
-    private final AppsDataSource mDataSource;
     private final LoaderManager mLoaderManager;
+    private final AppsDataSource mDataSource;
     private Context mContext;
 
     AppListPresenter(AppsDataSource mDataSource, LoaderManager manager, Context context) {
         this.mDataSource = checkNotNull(mDataSource);
-        mContext = context;
-        mLoaderManager = manager;
+        this.mContext = context;
+        this.mLoaderManager = manager;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class AppListPresenter implements AppListContract.Presenter, LoaderManage
     }
 
     @Override
-    public void getDeviceApplicationList() {
+    public void loadDeviceApplicationList() {
         mLoaderManager.initLoader(0, null, this);
     }
 
@@ -57,7 +61,8 @@ public class AppListPresenter implements AppListContract.Presenter, LoaderManage
 
     @Override
     public void onLoadFinished(Loader<List<AppEntry>> loader, List<AppEntry> data) {
-        // Set the new data in the adapter.
+        // Louder finished loading applications
+        // Start loading blacklisted applications.
         getBlackListedApplications(data);
     }
 
@@ -86,10 +91,10 @@ public class AppListPresenter implements AppListContract.Presenter, LoaderManage
             }
 
             @Override
-            public void onAppsNotAvailable() {
+            public void onAppsNotAvailable(AppsNotAvailableException e) {
                 if (mView != null && mView.get() != null) {
                     mView.get().hideLoading();
-                    mView.get().showError("No Applications!");
+                    mView.get().showError(ErrorMessageFactory.create(mContext, e));
                 }
             }
         });

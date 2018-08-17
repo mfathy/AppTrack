@@ -1,6 +1,7 @@
 package com.mfathy.apptrack.service;
 
 import android.app.AlarmManager;
+import android.app.ListFragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,23 +11,26 @@ import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.mfathy.apptrack.R;
+import com.mfathy.apptrack.presentation.MainActivity;
+import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
 import com.mfathy.data.AppsDataSource;
 import com.mfathy.data.Injection;
+import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.model.AppEntry;
 import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.utils.AppExecutors;
-import com.mfathy.apptrack.presentation.MainActivity;
-import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -64,76 +68,18 @@ public class DistractionModeService extends Service {
     private boolean destroy = false;
 
 
-    public static void start(Context context) {
-        long userInterval = getUserPreferredInterval(context) == 1 ? ONE_MINUTE_INTERVAL_MILLIS : getUserPreferredInterval(context) * ONE_MINUTE_INTERVAL_MILLIS;
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        if (am != null) {
-            Log.d(TAG, String.format("Setting new alarm on: %s", DateFormat.getDateTimeInstance().format(new Date())));
-            am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), userInterval, getRunIntent(context));
-            isAlarmStarted = true;
-        }
+    public DistractionModeService() {
     }
 
-    private static long getUserPreferredInterval(Context context) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-        String userIntervalString = sharedPref.getString(context.getString(R.string.key_edit_distraction_mode_interval), "0");
-        try {
-            return Long.valueOf(userIntervalString);
-        } catch (NumberFormatException e) {
-            return 0L;
-        }
+    public DistractionModeService(AppsDataSource mDataSource) {
+        this.mDataSource = mDataSource;
     }
 
-    public static void stop(Context context) {
-        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-        if (am != null) {
-            am.cancel(getRunIntent(context));
-            isAlarmStarted = false;
-        }
-
-    }
-
-    private static PendingIntent getRunIntent(Context context) {
-        if (distractionModeServiceIntent == null) {
-            Intent intent = new Intent(context, DistractionModeService.class);
-            intent.setAction(ACTION_START);
-            distractionModeServiceIntent = PendingIntent.getService(context, REQUEST_CODE, intent, 0);
-        }
-        return distractionModeServiceIntent;
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
+    //region Service methods.
     @Override
     public void onCreate() {
         super.onCreate();
-        AppExecutors mAppExecutor = new AppExecutors();
-        mDataSource = Injection.provideDataRepository(this, mAppExecutor);
-    }
-
-    /**
-     * Load blacklisted applications from data source.
-     */
-    private void loadBlackListedApplications() {
-        Log.d(TAG, "Getting blacklisted Apps");
-        mDataSource.getApplicationEntities(null, new AppsDataSource.LoadApplicationEntitiesCallback() {
-            @Override
-            public void onAppsLoaded(List<AppEntry> appEntries, List<BlackListedApp> blackListedApps) {
-                if (blackListedApps == null)
-                    mBlackListedApps = new ArrayList<>();
-                else
-                    mBlackListedApps = blackListedApps;
-            }
-
-            @Override
-            public void onAppsNotAvailable() {
-                //  nothing to do here
-            }
-        });
+        initAppsDataSource();
     }
 
     @Override
@@ -152,51 +98,137 @@ public class DistractionModeService extends Service {
                 screenOnOffReceiver = new ScreenOnOffReceiver();
                 registerReceiver(screenOnOffReceiver, ScreenOnOffReceiver.getIntentFilters());
             }
-            checkAppChanged();
+            checkCurrentForegroundApp();
         } else if (ACTION_STOP.equalsIgnoreCase(intent.getAction())) {
             stopAlarmAndStopSelf();
         }
         return START_STICKY;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private Notification getServiceNotification() {
-        // Create intent that will bring our app to the front, as if it was tapped in the app launcher
-        Intent notificationIntent = new Intent(this, SettingsActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy called - " + destroy);
+        if (!destroy)
+            start(this);
 
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentText(getString(R.string.notify_android_o_notification_content))
-                .setContentTitle(getString(R.string.notify_android_o_notification_title))
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
-                .build();
-    }
+        destroy = false;
 
-    private void getBlackListedAppNotification() {
-        NotificationManager mNotifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
-
-        Notification appNotification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentText(getString(R.string.notify_blacklisted_app_notification_content))
-                .setContentTitle(getString(R.string.notify_blacklisted_app_notification_title))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
-                .build();
-
-        if (mNotifyManager != null) {
-            mNotifyManager.notify(BLACK_LIST_APP_NOTIFICATION_ID, appNotification);
+        try {
+            unregisterReceiver(screenOnOffReceiver);
+        } catch (IllegalArgumentException e) {
+            //  Receiver not registered
         }
     }
 
-    private void checkAppChanged() {
-        String currentPackage = currentPackage();
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    //endregion
+
+    //region Helper methods
+
+    /**
+     * Initializes application local data source.
+     */
+    private void initAppsDataSource() {
+        AppExecutors mAppExecutor = new AppExecutors();
+        mDataSource = Injection.provideDataRepository(this, mAppExecutor);
+    }
+
+    /**
+     * Start a repeating alarm to detect foreground application every 1 minute or any custom duration entered by the user.
+     *
+     * @param context android context.
+     */
+    public static void start(Context context) {
+        long userInterval = getUserPreferredInterval(context) <= 1 ? ONE_MINUTE_INTERVAL_MILLIS : getUserPreferredInterval(context) * ONE_MINUTE_INTERVAL_MILLIS;
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        if (am != null) {
+            Log.d(TAG, String.format("Setting new alarm on: %s", DateFormat.getDateTimeInstance().format(new Date())));
+            am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), userInterval, getRunIntent(context));
+            isAlarmStarted = true;
+        }
+    }
+
+    /**
+     * Stop the repeating alarm mentioned in start();
+     *
+     * @param context android context
+     */
+    public static void stop(Context context) {
+        AlarmManager am = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        if (am != null) {
+            am.cancel(getRunIntent(context));
+            isAlarmStarted = false;
+        }
+
+    }
+
+    /**
+     * Returns a {@link PendingIntent} of {@link DistractionModeService} to run it by the alarm manager.
+     *
+     * @param context android context
+     * @return PendingIntent of {@link DistractionModeService}
+     */
+    private static PendingIntent getRunIntent(Context context) {
+        if (distractionModeServiceIntent == null) {
+            Intent intent = new Intent(context, DistractionModeService.class);
+            intent.setAction(ACTION_START);
+            distractionModeServiceIntent = PendingIntent.getService(context, REQUEST_CODE, intent, 0);
+        }
+        return distractionModeServiceIntent;
+    }
+
+    /**
+     * Gets user preferred interval waiting time.
+     *
+     * @param context android context.
+     * @return How much minutes user wants to wait before notifying him.
+     */
+    @VisibleForTesting
+    static long getUserPreferredInterval(Context context) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String userIntervalString = sharedPref.getString(context.getString(R.string.key_edit_distraction_mode_interval), "0");
+        try {
+            return Long.valueOf(userIntervalString);
+        } catch (NumberFormatException e) {
+            return 0L;
+        }
+    }
+
+    /**
+     * Load blacklisted applications from data source.
+     */
+    private void loadBlackListedApplications() {
+        Log.d(TAG, "Getting blacklisted Apps");
+        List<AppEntry> appEntries = new ArrayList<>();
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.sourceDir = "";
+        appEntries.add(new AppEntry(null, null, applicationInfo));
+        mDataSource.getApplicationEntities(appEntries, new AppsDataSource.LoadApplicationEntitiesCallback() {
+            @Override
+            public void onAppsLoaded(List<AppEntry> appEntries, List<BlackListedApp> blackListedApps) {
+                if (blackListedApps == null)
+                    mBlackListedApps = new ArrayList<>();
+                else
+                    mBlackListedApps = blackListedApps;
+            }
+
+            @Override
+            public void onAppsNotAvailable(AppsNotAvailableException e) {
+                //  nothing to do here
+            }
+        });
+    }
+
+    /**
+     * Checks current running foreground application.
+     */
+    private void checkCurrentForegroundApp() {
+        String currentPackage = getCurrentPackage(this);
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (mBlackListedApps != null && !mBlackListedApps.isEmpty() && mBlackListedApps.contains(new BlackListedApp(currentPackage))) {
@@ -208,10 +240,16 @@ public class DistractionModeService extends Service {
         }
     }
 
-    private String currentPackage() {
+    /**
+     * Returns current foreground application package name.
+     *
+     * @return package name.
+     */
+    @VisibleForTesting
+    String getCurrentPackage(Context context) {
         UsageStatsManager mUsageStatsManager;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mUsageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
+            mUsageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
 
             long time = System.currentTimeMillis();
             if (mUsageStatsManager != null) {
@@ -231,25 +269,60 @@ public class DistractionModeService extends Service {
         return "";
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy called - " + destroy);
-        if (!destroy)
-            start(this);
-
-        destroy = false;
-
-        try {
-            unregisterReceiver(screenOnOffReceiver);
-        } catch (IllegalArgumentException e) {
-            //  Receiver not registered
-        }
-    }
-
+    /**
+     * Stops {@link DistractionModeService} itself and the repeating Alarm.
+     */
     private void stopAlarmAndStopSelf() {
         destroy = true;
         stop(this);
         stopSelf();
     }
+    //endregion
+
+    //region Notifications
+
+    /**
+     * Builds a foreground service notification object required by Android Oreo 8.0
+     *
+     * @return notification object.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Notification getServiceNotification() {
+        // Create intent that will bring our app to the front, as if it was tapped in the app launcher
+        Intent notificationIntent = new Intent(this, SettingsActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, notificationIntent, 0);
+
+        return new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentText(getString(R.string.notify_android_o_notification_content))
+                .setContentTitle(getString(R.string.notify_android_o_notification_title))
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build();
+    }
+
+    /**
+     * Builds a blacklist application notification object to notify the user that he is using a blacklisted App.
+     */
+    private void getBlackListedAppNotification() {
+        NotificationManager mNotifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0, notificationIntent, 0);
+
+        Notification appNotification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentText(getString(R.string.notify_blacklisted_app_notification_content))
+                .setContentTitle(getString(R.string.notify_blacklisted_app_notification_title))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentIntent(pendingIntent)
+                .build();
+
+        if (mNotifyManager != null) {
+            mNotifyManager.notify(BLACK_LIST_APP_NOTIFICATION_ID, appNotification);
+        }
+    }
+    //endregion
 }

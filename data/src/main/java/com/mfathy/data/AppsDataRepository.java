@@ -2,8 +2,10 @@ package com.mfathy.data;
 
 import android.support.annotation.NonNull;
 
+import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.mutilites.utils.ValidationUtils;
 
 import java.util.List;
 
@@ -50,8 +52,8 @@ public class AppsDataRepository implements AppsDataSource {
             }
 
             @Override
-            public void onAppsNotAvailable() {
-                callback.onAppsNotAvailable();
+            public void onAppsNotAvailable(AppsNotAvailableException e) {
+                callback.onAppsNotAvailable(e);
             }
         });
     }

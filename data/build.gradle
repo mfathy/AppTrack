@@ -28,8 +28,33 @@ dependencies {
     //  Support Libraries
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
 
-    //  Testing
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espressoLibraryVersion"
-    androidTestImplementation "com.android.support.test:runner:$testRunnerVersion"
-    testImplementation "junit:junit:$jUnitLibraryVersion"
+    // Dependencies for local unit tests
+
+    testImplementation "org.robolectric:shadows-framework:$rootProject.ext.robolectricVersion"
+    testImplementation "org.robolectric:shadows-supportv4:$rootProject.ext.robolectricVersion"
+    testImplementation "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    testImplementation "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
+    testImplementation "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "com.android.support.test:rules:$rootProject.ext.rulesVersion"
+
+    androidTestImplementation "android.arch.persistence.room:testing:$rootProject.roomVersion"
+
+    // Dependencies for Android unit tests
+    androidTestImplementation "com.google.dexmaker:dexmaker-mockito:$rootProject.ext.dexmakerVersion"
+    androidTestImplementation "com.google.dexmaker:dexmaker:$rootProject.ext.dexmakerVersion"
+    androidTestImplementation "org.mockito:mockito-core:$rootProject.ext.mockitoVersion"
+    androidTestImplementation "junit:junit:$rootProject.ext.junitVersion"
+
+    // Resolve conflicts between main and test APK:
+    androidTestImplementation "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
+    androidTestImplementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    androidTestImplementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    androidTestImplementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+
+
+    implementation project(':mutilites')
 }

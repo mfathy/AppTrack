@@ -8,12 +8,16 @@ import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.mfathy.apptrack.R;
-import com.mfathy.apptrack.presentation.Utils.PermissionUtils;
+import com.mfathy.apptrack.presentation.utils.PermissionUtils;
 import com.mfathy.apptrack.service.DistractionModeService;
 
 /**
  * Created by Mohammed Fathy on 15/08/2018.
  * dev.mfathy@gmail.com
+ *
+ * Settings fragment has 2 settings:
+ * 1- Enable/disable distraction mode.
+ * 2- User custom waiting interval.
  */
 public class SettingsPreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -65,6 +69,9 @@ public class SettingsPreferenceFragment extends PreferenceFragmentCompat impleme
         }
     }
 
+    /**
+     * Helper method to start Distraction mode after checking that user gave us permission.
+     */
     private void startDistractionMode(boolean distributionModeFlag, Intent intent) {
         if (distributionModeFlag) {
             if (!PermissionUtils.hasPermission(mContext))
@@ -77,11 +84,17 @@ public class SettingsPreferenceFragment extends PreferenceFragmentCompat impleme
         }
     }
 
+    /**
+     * Helper method to stop {@link DistractionModeService} itself.
+     */
     private void stopService(Intent intent) {
         DistractionModeService.stop(mContext);
         mContext.stopService(intent);
     }
 
+    /**
+     * Helper method to start {@link DistractionModeService} itself.
+     */
     private void startService(Intent intent) {
         intent.setAction(DistractionModeService.ACTION_START);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

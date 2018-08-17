@@ -2,6 +2,7 @@ package com.mfathy.data;
 
 import android.support.annotation.NonNull;
 
+import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
 
@@ -19,6 +20,6 @@ public interface AppsDataSource {
 
     interface LoadApplicationEntitiesCallback {
         void onAppsLoaded(List<AppEntry> appEntries, List<BlackListedApp> appEntities);
-        void onAppsNotAvailable();
+        void onAppsNotAvailable(AppsNotAvailableException e);
     }
 }

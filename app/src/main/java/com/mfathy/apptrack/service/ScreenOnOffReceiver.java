@@ -9,6 +9,8 @@ import android.util.Log;
 /**
  * Created by Mohammed Fathy on 14/08/2018.
  * dev.mfathy@gmail.com
+ *
+ * Broadcast Receiver to listen to Screen ON | OFF changes.
  */
 public class ScreenOnOffReceiver extends BroadcastReceiver {
 

@@ -1,4 +1,4 @@
-package com.mfathy.apptrack.presentation.Utils;
+package com.mfathy.apptrack.presentation.utils;
 
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
@@ -14,14 +14,26 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 /**
  * Created by Mohammed Fathy on 15/08/2018.
  * dev.mfathy@gmail.com
+ *
+ * Helper class to help getting USAGE_ACCESS permission from the user.
  */
 public class PermissionUtils {
+
+    /**
+     * Requests USAGE_ACCESS permission from the user.
+     * @param context requesting the permission.
+     */
     public static void requestPermission(Context context) {
         Intent intent = new Intent(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS));
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
+    /**
+     * Checks AppTrack has permission to access USAGE_ACCESS data.
+     * @param context requesting the permission.
+     * @return access state for our App.
+     */
     public static boolean hasPermission(Context context) {
         AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         if (appOps != null) {
@@ -31,6 +43,10 @@ public class PermissionUtils {
         return false;
     }
 
+    /**
+     * Helper method to alert the user to request the USAGE_ACCESS permission.
+     * @param context requesting the permission
+     */
     public static void alertUserToRequestPermission(final Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.message_request_usage_access).setTitle(R.string.app_name);

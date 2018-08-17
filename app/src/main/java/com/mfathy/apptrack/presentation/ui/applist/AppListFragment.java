@@ -1,11 +1,13 @@
 package com.mfathy.apptrack.presentation.ui.applist;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +26,7 @@ import com.mfathy.data.Injection;
 import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.model.AppEntry;
 import com.mfathy.data.utils.AppExecutors;
-import com.mfathy.apptrack.presentation.Utils.PermissionUtils;
+import com.mfathy.apptrack.presentation.utils.PermissionUtils;
 import com.mfathy.apptrack.presentation.ui.settings.SettingsActivity;
 import com.mfathy.apptrack.service.DistractionModeService;
 
@@ -39,7 +41,8 @@ import java.util.List;
  */
 public class AppListFragment extends Fragment implements AppListContract.View, AppListAdapterInteractions {
 
-    private static final int REQUEST_USAGE_CODE = 10101;
+    @VisibleForTesting
+    static final int REQUEST_USAGE_CODE = 10101;
     private static final int MENU_ID = 1011;
     private ProgressBar mProgressBarLoading;
     private TextView mTextViewErrorLabel;
@@ -73,7 +76,7 @@ public class AppListFragment extends Fragment implements AppListContract.View, A
 
         hideAppList();
         showLoading();
-        mPresenter.getDeviceApplicationList();
+        mPresenter.loadDeviceApplicationList();
 
         startDistractionMode();
     }
@@ -169,6 +172,11 @@ public class AppListFragment extends Fragment implements AppListContract.View, A
     public void hideAppList() {
         mRecyclerView.setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public Context context() {
+        return getActivity();
+    }
     //endregion
 
     //region AppListAdapterInteractions methods
@@ -181,7 +189,6 @@ public class AppListFragment extends Fragment implements AppListContract.View, A
     //endregion
 
     //region Helper methods
-
     /**
      * Helper method to start Distraction mode after checking that user gave us permission.
      */

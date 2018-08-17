@@ -3,8 +3,9 @@ package com.mfathy.data.local;
 import android.support.annotation.NonNull;
 
 import com.mfathy.data.AppsDataSource;
-import com.mfathy.data.model.BlackListedApp;
+import com.mfathy.data.exception.AppsNotAvailableException;
 import com.mfathy.data.model.AppEntry;
+import com.mfathy.data.model.BlackListedApp;
 import com.mfathy.data.utils.AppExecutors;
 
 import java.util.List;
@@ -51,12 +52,12 @@ public class LocalDataSource implements AppsDataSource {
                 mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (appEntities.isEmpty()) {
-                            // This will be called if the table is new or just empty.
+                        if (appEntities.isEmpty() && data != null && !data.isEmpty())
                             callback.onAppsLoaded(data, null);
-                        } else {
+                        else if (!appEntities.isEmpty() && data != null && !data.isEmpty())
                             callback.onAppsLoaded(data, appEntities);
-                        }
+                        else
+                            callback.onAppsNotAvailable(new AppsNotAvailableException());
                     }
                 });
             }
